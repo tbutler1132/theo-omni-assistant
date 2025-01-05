@@ -1,0 +1,11 @@
+{
+  "name": "theo_omni_ai",
+  "version": "1.0.0",
+  "description": "Theo Omni AI",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC"
+}
