@@ -1,7 +1,6 @@
-const { Client } = require("@notionhq/client");
-require("dotenv").config();
-
-console.log("TOKEN", process.env.NOTION_TOKEN);
+import Client from "@notionhq/client";
+import { config } from "dotenv";
+config();
 
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -27,7 +26,10 @@ const queryDB = async (id) => {
       database_id: id,
     });
 
-    console.log("Databases:", response.results[0].properties.Step.rich_text);
+    console.log(
+      "Databases:",
+      response.results.map((r) => r.properties.Summary.rich_text[0].text)
+    );
   } catch (error) {
     console.log("ERROR", error);
   }
@@ -67,74 +69,4 @@ const addTaskToDatabase = async (taskName, dueDate) => {
 // Example usage: Add a task with a name and due date
 // addTaskToDatabase("Finish music track", "2025-01-15");
 
-// getDB();
-
-const getPage = async (page_id) => {
-  try {
-    const response = await notion.blocks.children.list({
-      block_id: page_id,
-    });
-    console.log(response.results); // This contains all the blocks (including inline tables)
-  } catch (error) {
-    console.error("Error retrieving blocks:", error);
-  }
-};
-
-const getPageBlocks = async (pageId) => {
-  try {
-    const response = await notion.blocks.children.list({
-      block_id: pageId,
-    });
-    return extractTextFromBlocks(response.results);
-  } catch (error) {
-    console.error("Error retrieving Notion page blocks:", error);
-    return [];
-  }
-};
-
-const extractTextFromBlocks = (blocks) => {
-  console.log("Blocks", blocks);
-  let text = "";
-
-  blocks.forEach((block) => {
-    if (block.type === "paragraph" && block.paragraph.text.length > 0) {
-      text +=
-        block.paragraph.text.map((item) => item.plain_text).join(" ") + "\n";
-    }
-    if (block.type === "heading_1" && block.heading_1.text.length > 0) {
-      text +=
-        block.heading_1.text.map((item) => item.plain_text).join(" ") + "\n";
-    }
-    if (block.type === "heading_2" && block.heading_2.text.length > 0) {
-      text +=
-        block.heading_2.text.map((item) => item.plain_text).join(" ") + "\n";
-    }
-    if (block.type === "heading_3" && block.heading_3.text.length > 0) {
-      text +=
-        block.heading_3.text.map((item) => item.plain_text).join(" ") + "\n";
-    }
-    if (
-      block.type === "bulleted_list_item" &&
-      block.bulleted_list_item.text.length > 0
-    ) {
-      text +=
-        block.bulleted_list_item.text.map((item) => item.plain_text).join(" ") +
-        "\n";
-    }
-    if (
-      block.type === "numbered_list_item" &&
-      block.numbered_list_item.text.length > 0
-    ) {
-      text +=
-        block.numbered_list_item.text.map((item) => item.plain_text).join(" ") +
-        "\n";
-    }
-    if (block.type === "quote" && block.quote.text.length > 0) {
-      text += block.quote.text.map((item) => item.plain_text).join(" ") + "\n";
-    }
-  });
-
-  return text;
-};
-
-getPageBlocks("1733fb9fe065808db716d21b495ec10c");
+// queryDB("1743fb9fe065801988eeda65d6972b45");

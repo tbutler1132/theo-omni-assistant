@@ -1,5 +1,6 @@
-const OpenAI = require("openai");
-require("dotenv").config();
+import OpenAI from "openai";
+import { config } from "dotenv";
+config();
 
 const client = new OpenAI({
   apiKey: process.env.OPEN_AI_TOKEN,
