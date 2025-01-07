@@ -11,6 +11,10 @@
   "dependencies": {
     "@notionhq/client": "^2.2.15",
     "axios": "^1.7.9",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "openai": "^4.77.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
